@@ -1,6 +1,7 @@
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 import datetime
+import os  # импортируем os для работы с переменными окружения
 
 # ✨ Текст поздравления
 def congratulate(update: Update, context: CallbackContext) -> None:
@@ -26,8 +27,12 @@ def congratulate(update: Update, context: CallbackContext) -> None:
 
 # 🔧 Запуск бота
 def main():
-    # Замените 'YOUR_TOKEN' на токен вашего бота
-    updater = Updater("8087227602:AAGiCg_8QBiYoSuArc5FUj9XTYuDfV8tcIo", use_context=True)
+    # Токен читается из переменной окружения TELEGRAM_TOKEN
+    token = os.getenv("TELEGRAM_TOKEN")
+    if not token:
+        raise ValueError("Отсутствует токен бота! Установите переменную окружения TELEGRAM_TOKEN.")
+
+    updater = Updater(token, use_context=True)
     dp = updater.dispatcher
 
     # Команда /start
